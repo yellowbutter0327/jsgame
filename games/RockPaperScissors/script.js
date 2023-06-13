@@ -17,6 +17,7 @@ let drawNumber = 0;
 
 const result = document.getElementById("result");
 const restart = document.getElementById("restart");
+const winner = document.getElementById("winner");
 
 function getComputerChoice(imagePosition) {
   return Object.keys(dictionary).find(
@@ -25,22 +26,7 @@ function getComputerChoice(imagePosition) {
 }
 
 function updateResult() {
-  result.innerHTML = `${playTime}번의 게임을 하셨습니다. <br><br> ${winNumber}번 승 ${loseNumber}번 패 ${drawNumber}번 무`;
-}
-
-//사용자 점수와 컴퓨터 점수의 차이에 따라 승패를 결정한다.
-function handleResult(scoreGap) {
-  if (scoreGap === 0) {
-    alert("비겼다 !");
-    drawNumber++;
-  } else if ([-1, 2].includes(scoreGap)) {
-    alert("이겼다 !");
-    winNumber++;
-  } else {
-    alert("졌다 !");
-    loseNumber++;
-  }
-  updateResult();
+  result.innerHTML = `${playTime}번의 게임을 하셨습니다. <br><br>  승리 ${winNumber}번  패배 ${loseNumber}번  무승부 ${drawNumber}번 `;
 }
 
 function intervalMaker() {
@@ -56,7 +42,7 @@ function intervalMaker() {
       imagePosition = dictionary.바위;
     }
     computer.style.background = `url(game.jpg) ${imagePosition} 0`;
-  }, 600);
+  }, 100);
 }
 
 let interval = intervalMaker();
@@ -65,7 +51,6 @@ document.querySelectorAll(".button").forEach((button) => {
   button.addEventListener("click", function () {
     clearInterval(interval);
     interval = intervalMaker();
-    playTime++;
     restart.style.display = "inline-block";
     const myPick = this.textContent;
     const myScore = score[myPick];
@@ -76,12 +61,44 @@ document.querySelectorAll(".button").forEach((button) => {
   });
 });
 
+// 사용자 점수와 컴퓨터 점수의 차이에 따라 승패를 결정한다.
+function handleResult(scoreGap) {
+  if (playTime < 5) {
+    if (scoreGap === 0) {
+      drawNumber++;
+      alert("비겼다 !");
+    } else if ([-1, 2].includes(scoreGap)) {
+      winNumber++;
+      alert("이겼다 !");
+    } else {
+      loseNumber++;
+      alert("졌다 !");
+    }
+    playTime++;
+    updateResult(); // 결과 표시
+  }
+
+  if (playTime === 5) {
+    if (winNumber > loseNumber) {
+      document.getElementById("winner").innerText = "승리!";
+    } else if (winNumber < loseNumber) {
+      document.getElementById("winner").innerText = "패배!";
+    } else {
+      document.getElementById("winner").innerText = "무승부!";
+    }
+    winner.style.display = "inline-block";
+  }
+}
+
 function resetGame() {
   playTime = 0;
   winNumber = 0;
   loseNumber = 0;
   drawNumber = 0;
   updateResult();
+  winner.innerText = "";
+  winner.style.display = "none";
+  restart.style.display = "none";
 }
 
 restart.addEventListener("click", resetGame);
