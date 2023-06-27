@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,18 +10,15 @@
 </head>
 
 <body>
-    <div class="main">
-        <div class="keyword">
-            <input type="text" id="word" autocomplete="off">
-            <div class="timezone"></div>
-            <div class="point">
-                <span>점수 :</span>
-                <span id="point"></span>
-            </div>
+    <div class="wordChainWrap">
+        <div class="participant"><span id="order">1</span>번째 참가자</div>
+        <div>제시어 : <span id="word"></span></div>
+        <div class="inputWrap">
+            <input id="input" type="text">
+            <button id="button">입력</button>
+            <button id="restartButton">재시작</button>
         </div>
-    </div>
+        <script type="module" src="./script.js"></script>
 </body>
-
-<script type="module" src="./script.js"></script>
 
 </html>
